@@ -53,11 +53,6 @@ namespace HT2000Viewer
                 ViewModel.WarningVisibility = Visibility.Visible;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            ContentFrame.Navigate(typeof(Page1));
-        }
-
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)
