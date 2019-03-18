@@ -1,0 +1,37 @@
+﻿<UserControl
+    x:Class="HT2000Viewer.Controls.QChart"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HT2000Viewer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="Gray"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid  Grid.Row="0">
+            <TextBlock Text="{x:Bind LeftTopText}" HorizontalAlignment="Left"  /> 
+            <TextBlock x:Name="RightTopText" Text="Max Value" HorizontalAlignment="Right" />
+        </Grid>
+        <canvas:CanvasControl   x:Name="ChartCanvas" Grid.Row="1" Draw="CanvasControl_Draw"  ClearColor="White"/>
+
+        <Grid Grid.Row="1"  VerticalAlignment="Bottom">
+            <TextBlock Text="{x:Bind Labels.LeftBottomText}" HorizontalAlignment="Left" Visibility="Collapsed" />
+            <TextBlock  x:Name="RightBottomText" Text="Min Value" HorizontalAlignment="Right"/>            
+        </Grid>
+
+    </Grid>
+</UserControl>
