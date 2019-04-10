@@ -156,6 +156,7 @@ namespace HT2000Viewer.Controls
 
         void RenderGrid(CanvasDrawingSession ds, float width, float height)
         {
+            if (TimeAxis == null) return;
             DateTime now = DateTime.Now;
             DateTime t0 = now - TimeAxis.TimeSpan;
             DateTime start = t0;
