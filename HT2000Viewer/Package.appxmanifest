@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="64349AlexanderKryzhanovsl.HT2000Viewer" Publisher="CN=959BBA0D-5640-49DE-8AB5-D096D60718D5" Version="1.1.3.0" />
+  <Identity Name="64349AlexanderKryzhanovsl.HT2000Viewer" Publisher="CN=959BBA0D-5640-49DE-8AB5-D096D60718D5" Version="1.1.7.0" />
   <mp:PhoneIdentity PhoneProductId="ab587352-80bb-4395-8e2f-ab1dc55d93cc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>HT2000 Viewer</DisplayName>
