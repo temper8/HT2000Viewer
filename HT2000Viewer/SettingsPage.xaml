@@ -21,7 +21,7 @@
             <TextBlock Text="About" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 20 20 0"/>
             <TextBlock Text ="{x:Bind AppVersion}" Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0"/>
             <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0">
-                <Span xml:space="preserve">© 2019 Alexander Kryzhanovskyi</Span><LineBreak/>
+                <Span xml:space="preserve">© 2019 Alexander Kryzhanovskiy</Span><LineBreak/>
                 <Hyperlink NavigateUri="https://github.com/temper8/HT2000Viewer">Source code</Hyperlink>
             </TextBlock>
         </StackPanel>
