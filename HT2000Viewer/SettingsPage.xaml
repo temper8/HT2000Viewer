@@ -14,11 +14,18 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <StackPanel  Grid.Column="0" >
-            <TextBlock Text="Settings" FontSize="20" HorizontalAlignment="Center" Margin="20"/>
+            <TextBlock Text="Settings" FontSize="20" HorizontalAlignment="Center" Margin="20" Visibility="Collapsed"/>
             <Button  Content="Reset database" Click="Button_Click" HorizontalAlignment="Center" Margin="20"/>
         </StackPanel>
-        
+        <StackPanel  Grid.Column="1" >
+            <TextBlock Text="About" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 20 20 0"/>
+            <TextBlock Text ="{x:Bind AppVersion}" Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0"/>
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0">
+                <Span xml:space="preserve">© 2019 Alexander Kryzhanovskyi</Span><LineBreak/>
+                <Hyperlink NavigateUri="https://github.com/temper8/HT2000Viewer">Source code</Hyperlink>
+            </TextBlock>
+        </StackPanel>
 
-        <TextBlock Grid.Column="1" Text="About" FontSize="20" HorizontalAlignment="Center" Visibility="Collapsed"/>
+        
     </Grid>
 </Page>
