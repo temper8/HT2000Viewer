@@ -5,7 +5,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -45,12 +49,11 @@ namespace HT2000Viewer
         }
 
 
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.WarningVisibility == Visibility.Visible)
-                ViewModel.WarningVisibility = Visibility.Collapsed;
-            else
-                ViewModel.WarningVisibility = Visibility.Visible;
+            // create client instance 
+
         }
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
