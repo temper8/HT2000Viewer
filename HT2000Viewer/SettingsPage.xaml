@@ -26,6 +26,11 @@
 
             <TextBox  Header="Client Id" Height="60" Text="{x:Bind ViewModel.Mqtt.clientId, Mode=TwoWay}"/>
 
+            <TextBox  Header="Temperature Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.TemperatureTopic, Mode=TwoWay}"/>
+
+            <TextBox  Header="Humidity Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.HumidityTopic, Mode=TwoWay}"/>
+
+            <TextBox  Header="CO2 Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.CO2Topic, Mode=TwoWay}"/>
         </StackPanel>
         <StackPanel  Grid.Column="1" >
             <TextBlock Text="About" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 20 20 0"/>
