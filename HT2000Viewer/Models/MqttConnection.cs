@@ -11,7 +11,6 @@ namespace HT2000Viewer.Models
 {
     public class MqttConnection
     {
-        //string brokerHostName = "m24.cloudmqtt.com";
         public string brokerHostName {
             get => (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerHostName"];
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerHostName"] = value;
@@ -87,8 +86,6 @@ namespace HT2000Viewer.Models
             try
             {
                 client = new MqttClient(brokerHostName, brokerPort, false, MqttSslProtocols.None);
-
-                //clientId = Guid.NewGuid().ToString();
                 client.Connect(clientId, username, password);
             }
             catch (Exception e)
@@ -100,21 +97,16 @@ namespace HT2000Viewer.Models
         public void Publish(string topic, double value)
         {
             if (client == null) return;
-            string strValue = value.ToString("F1");//  Convert.ToString("F1", value);
+            string strValue = value.ToString("F1");
             client.Publish(topic, Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
         }
 
 
         public void PublishState(Measurement m)
         {
-            //  Temperature = m.Temperature;
-            //  Humidity = m.Humidity;
-            //  CO2 = m.CO2;
             Publish(TemperatureTopic, m.Temperature);
             Publish(HumidityTopic, m.Humidity);
             Publish(CO2Topic, m.CO2);
         }
-            // publish a message on "/home/temperature" topic with QoS 2 
-
         }
     }
