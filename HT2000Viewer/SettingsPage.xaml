@@ -16,6 +16,16 @@
         <StackPanel  Grid.Column="0" >
             <TextBlock Text="Settings" FontSize="20" HorizontalAlignment="Center" Margin="20" Visibility="Collapsed"/>
             <Button  Content="Reset database" Click="Button_Click" HorizontalAlignment="Center" Margin="20"/>
+
+            <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
+
+            <TextBox  Header="Broker Port" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerPort, Mode=TwoWay}"/>
+
+            <TextBox  Header="Username" Height="60" Text="{x:Bind ViewModel.Mqtt.username, Mode=TwoWay}"/>
+            <TextBox  Header="Password" Height="60" Text="{x:Bind ViewModel.Mqtt.password, Mode=TwoWay}"/>
+
+            <TextBox  Header="Client Id" Height="60" Text="{x:Bind ViewModel.Mqtt.clientId, Mode=TwoWay}"/>
+
         </StackPanel>
         <StackPanel  Grid.Column="1" >
             <TextBlock Text="About" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 20 20 0"/>

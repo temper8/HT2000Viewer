@@ -10,19 +10,51 @@ namespace HT2000Viewer.Models
 {
     public class MqttConnection
     {
-        string brokerHostName = "m24.cloudmqtt.com";
-        int brokerPort = 14288;
-        string username = "";
-        string password = "";
+        //string brokerHostName = "m24.cloudmqtt.com";
+        public string brokerHostName {
+            get => (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerHostName"];
+            set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerHostName"] = value;
+        }
+
+        public int brokerPort
+        {
+            get => Convert.ToInt32(Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerPort"]);
+            set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerPort"] = value;
+        }
+
+        public string username
+        {
+            get => (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values["username"];
+            set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["username"] = value;
+        }
+
+        public string password
+        {
+            get => (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values["password"];
+            set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["password"] = value;
+        }
+
+        public string clientId
+        {
+            get => (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values["clientId"];
+            set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["clientId"] = value;
+        }
 
         MqttClient client = null;
-        string clientId;
+
         public MqttConnection()
         {
-            client = new MqttClient(brokerHostName, brokerPort, false, MqttSslProtocols.None);
+            try
+            {
+                client = new MqttClient(brokerHostName, brokerPort, false, MqttSslProtocols.None);
 
-            clientId = Guid.NewGuid().ToString();
-            client.Connect(clientId, username, password);
+                clientId = Guid.NewGuid().ToString();
+                client.Connect(clientId, username, password);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public void Publish(string topic, double value)
