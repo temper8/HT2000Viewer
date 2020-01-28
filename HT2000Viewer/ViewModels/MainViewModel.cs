@@ -58,6 +58,12 @@ namespace HT2000Viewer.ViewModels
             ht2000.OnSuspending();
             // throw new NotImplementedException();
         }
+        Visibility _MQTTstatusVisibility;
+        public Visibility MQTTstatusVisibility
+        {
+            get => _MQTTstatusVisibility;
+            set => Set(ref _MQTTstatusVisibility, value);
+        }
 
 
         Visibility _WarningVisibility;

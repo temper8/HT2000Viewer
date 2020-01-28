@@ -9,7 +9,9 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Page.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
         <NavigationView  x:Name="NavView" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" 
@@ -43,6 +45,9 @@
                 </StackPanel>
                     <StackPanel x:Name="WarningBlock" Visibility="{x:Bind ViewModel.WarningVisibility, Mode=OneWay}"   Orientation="Horizontal" HorizontalAlignment="Stretch"  Background="Red">
                         <TextBlock Text="HT2000 device is not connected. The data is random." FontSize="24" FontWeight="Bold" Foreground="White" TextAlignment="Center" Margin="5" />
+                    </StackPanel>
+                    <StackPanel x:Name="MQTTStatusBlock" Visibility="{x:Bind ViewModel.Mqtt.Enabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Stretch"  Background="Gray">
+                        <TextBlock Text="MQTT status:" FontSize="24" FontWeight="Bold" Foreground="White" TextAlignment="Center" Margin="5" />
                     </StackPanel>
                 </StackPanel>
             </NavigationView.Header>

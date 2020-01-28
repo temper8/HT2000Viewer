@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HT2000Viewer.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using static Windows.Storage.ApplicationData;
 
 namespace HT2000Viewer.Models
 {
-    public class MqttConnection
+    public class MqttConnection: Observable
     {
         public string brokerHostName {
             get => (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values["BrokerHostName"];
@@ -43,7 +44,21 @@ namespace HT2000Viewer.Models
             }
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["clientId"] = value;
         }
-        
+
+        public bool Enabled
+        {
+            get
+            {
+                if (!Current.LocalSettings.Values.ContainsKey("Enabled"))
+                    Current.LocalSettings.Values["Enabled"] = false;
+                return (bool)Current.LocalSettings.Values["Enabled"];
+            }
+            set 
+            {
+                Windows.Storage.ApplicationData.Current.LocalSettings.Values["Enabled"] = value;
+                OnPropertyChanged("Enabled");
+            }
+        }
 
         public string TemperatureTopic
         {

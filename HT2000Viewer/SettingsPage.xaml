@@ -10,37 +10,52 @@
 
     <Grid  >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <StackPanel  Grid.Column="0" >
-            <TextBlock Text="Settings" FontSize="20" HorizontalAlignment="Center" Margin="20" Visibility="Collapsed"/>
-            <Button  Content="Reset database" Click="Button_Click" HorizontalAlignment="Center" Margin="20"/>
+        <StackPanel Grid.Column="0">
+         
+            <Pivot>
+                <PivotItem Header="Mqtt settings">
+                    <StackPanel  >
+                        <TextBlock Text="Settings" FontSize="20" HorizontalAlignment="Center" Margin="20" />
+                        <CheckBox Content="Enable mqtt connection" IsChecked="{x:Bind ViewModel.Mqtt.Enabled, Mode=TwoWay}" />
+                        <TextBox Header="Time" Height="60" Text="sdfs"/>
+                        <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
 
-            <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
+                        <TextBox  Header="Broker Port" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerPort, Mode=TwoWay}"/>
 
-            <TextBox  Header="Broker Port" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerPort, Mode=TwoWay}"/>
+                        <TextBox  Header="Username" Height="60" Text="{x:Bind ViewModel.Mqtt.username, Mode=TwoWay}"/>
+                        <TextBox  Header="Password" Height="60" Text="{x:Bind ViewModel.Mqtt.password, Mode=TwoWay}"/>
 
-            <TextBox  Header="Username" Height="60" Text="{x:Bind ViewModel.Mqtt.username, Mode=TwoWay}"/>
-            <TextBox  Header="Password" Height="60" Text="{x:Bind ViewModel.Mqtt.password, Mode=TwoWay}"/>
+                        <TextBox  Header="Client Id" Height="60" Text="{x:Bind ViewModel.Mqtt.clientId, Mode=TwoWay}"/>
 
-            <TextBox  Header="Client Id" Height="60" Text="{x:Bind ViewModel.Mqtt.clientId, Mode=TwoWay}"/>
+                        <TextBox  Header="Temperature Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.TemperatureTopic, Mode=TwoWay}"/>
 
-            <TextBox  Header="Temperature Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.TemperatureTopic, Mode=TwoWay}"/>
+                        <TextBox  Header="Humidity Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.HumidityTopic, Mode=TwoWay}"/>
 
-            <TextBox  Header="Humidity Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.HumidityTopic, Mode=TwoWay}"/>
-
-            <TextBox  Header="CO2 Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.CO2Topic, Mode=TwoWay}"/>
-        </StackPanel>
-        <StackPanel  Grid.Column="1" >
-            <TextBlock Text="About" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 20 20 0"/>
-            <TextBlock Text ="{x:Bind AppVersion}" Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0"/>
-            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0">
+                        <TextBox  Header="CO2 Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.CO2Topic, Mode=TwoWay}"/>
+                    </StackPanel>
+                </PivotItem>
+                <PivotItem Header="Reset database">
+                    <Button  Content="Reset database" Click="Button_Click" HorizontalAlignment="Center" Margin="20"/>
+                </PivotItem>
+                <PivotItem Header="About">
+                    <StackPanel   >
+                        <TextBlock Text ="{x:Bind AppVersion}" Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0"/>
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="20 10 20 0">
                 <Span xml:space="preserve">© 2019 Alexander Kryzhanovskiy</Span><LineBreak/>
                 <Hyperlink NavigateUri="https://github.com/temper8/HT2000Viewer">Source code</Hyperlink>
-            </TextBlock>
-        </StackPanel>
+                        </TextBlock>
+                    </StackPanel>
+                </PivotItem>
 
+                <PivotItem Header="Urgent">
+                    <TextBlock Text="urgent emails go here." />
+                </PivotItem>
+            </Pivot>
+        </StackPanel>
+     
         
     </Grid>
 </Page>

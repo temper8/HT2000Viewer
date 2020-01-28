@@ -31,6 +31,25 @@ namespace HT2000Viewer
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
+    /// 
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            bool v = (bool)value;
+
+            Visibility targetVisibility = v ? Visibility.Visible: Visibility.Collapsed;
+            return targetVisibility;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+         
+            return false;
+        }
+    }
+
     public sealed partial class MainPage : Page
     {
 
