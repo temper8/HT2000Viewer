@@ -18,7 +18,6 @@
             <Pivot>
                 <PivotItem Header="Mqtt settings">
                     <StackPanel  >
-                        <TextBlock Text="Settings" FontSize="20" HorizontalAlignment="Center" Margin="20" />
                         <CheckBox Content="Enable mqtt connection" IsChecked="{x:Bind ViewModel.Mqtt.Enabled, Mode=TwoWay}" />
                         <TextBox Header="Time" Height="60" Text="sdfs"/>
                         <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
@@ -48,10 +47,6 @@
                 <Hyperlink NavigateUri="https://github.com/temper8/HT2000Viewer">Source code</Hyperlink>
                         </TextBlock>
                     </StackPanel>
-                </PivotItem>
-
-                <PivotItem Header="Urgent">
-                    <TextBlock Text="urgent emails go here." />
                 </PivotItem>
             </Pivot>
         </StackPanel>

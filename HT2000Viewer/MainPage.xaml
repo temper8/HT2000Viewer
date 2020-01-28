@@ -47,7 +47,7 @@
                         <TextBlock Text="HT2000 device is not connected. The data is random." FontSize="24" FontWeight="Bold" Foreground="White" TextAlignment="Center" Margin="5" />
                     </StackPanel>
                     <StackPanel x:Name="MQTTStatusBlock" Visibility="{x:Bind ViewModel.Mqtt.Enabled, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" Orientation="Horizontal" HorizontalAlignment="Stretch"  Background="Gray">
-                        <TextBlock Text="MQTT status:" FontSize="24" FontWeight="Bold" Foreground="White" TextAlignment="Center" Margin="5" />
+                        <TextBlock Text="{x:Bind ViewModel.Mqtt.ConnectionStatus, Mode=OneWay}" FontSize="24" FontWeight="Bold" Foreground="White" TextAlignment="Center" Margin="5" />
                     </StackPanel>
                 </StackPanel>
             </NavigationView.Header>

@@ -56,8 +56,16 @@ namespace HT2000Viewer.Models
             set 
             {
                 Windows.Storage.ApplicationData.Current.LocalSettings.Values["Enabled"] = value;
+                UpdateConnection();
                 OnPropertyChanged("Enabled");
             }
+        }
+
+        string _ConnectionStatus;
+        public string ConnectionStatus
+        {
+            get => _ConnectionStatus;
+            set => Set(ref _ConnectionStatus, value);
         }
 
         public string TemperatureTopic
@@ -98,16 +106,38 @@ namespace HT2000Viewer.Models
 
         public MqttConnection()
         {
+            UpdateConnection();
+        }
+
+        public void UpdateConnection()
+        {
+            if (Enabled)
+                TryConnect();
+            else
+                DisConnect();
+        }
+        public void DisConnect()
+        {
+            if (client != null)
+                client.Disconnect();
+            ConnectionStatus = "MQTT status: disconnected";
+        }
+
+        public void TryConnect()
+        {
+            ConnectionStatus = "MQTT status: try connect to ...";
             try
             {
                 client = new MqttClient(brokerHostName, brokerPort, false, MqttSslProtocols.None);
                 client.Connect(clientId, username, password);
+                ConnectionStatus = $"MQTT status: connected to {brokerHostName}:{brokerPort}";
             }
             catch (Exception e)
             {
-
+                ConnectionStatus = "MQTT status: Exeption";
             }
         }
+
 
         public void Publish(string topic, double value)
         {
