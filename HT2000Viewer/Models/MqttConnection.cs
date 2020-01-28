@@ -50,7 +50,7 @@ namespace HT2000Viewer.Models
             get
             {
                 if (!Current.LocalSettings.Values.ContainsKey("TemperatureTopic"))
-                    Current.LocalSettings.Values["TemperatureTopic"] = $"/home/temperature";
+                    Current.LocalSettings.Values["TemperatureTopic"] = $"/ht2000/temperature";
                 return (string)Current.LocalSettings.Values["TemperatureTopic"];
             }
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["TemperatureTopic"] = value;
@@ -61,7 +61,7 @@ namespace HT2000Viewer.Models
             get
             {
                 if (!Current.LocalSettings.Values.ContainsKey("HumidityTopic"))
-                    Current.LocalSettings.Values["HumidityTopic"] = $"/home/humidity";
+                    Current.LocalSettings.Values["HumidityTopic"] = $"/ht2000/humidity";
                 return (string)Current.LocalSettings.Values["HumidityTopic"];
             }
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["HumidityTopic"] = value;
@@ -72,7 +72,7 @@ namespace HT2000Viewer.Models
             get
             {
                 if (!Current.LocalSettings.Values.ContainsKey("CO2Topic"))
-                    Current.LocalSettings.Values["CO2Topic"] = $"/home/co2";
+                    Current.LocalSettings.Values["CO2Topic"] = $"/ht2000/co2";
                 return (string)Current.LocalSettings.Values["CO2Topic"];
             }
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["CO2Topic"] = value;
