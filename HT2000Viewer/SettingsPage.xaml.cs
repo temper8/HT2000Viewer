@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HT2000Viewer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace HT2000Viewer
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+        public MainViewModel ViewModel => App.ViewModel;
         public SettingsPage()
         {
             this.InitializeComponent();

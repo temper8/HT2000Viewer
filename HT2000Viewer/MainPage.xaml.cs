@@ -5,7 +5,11 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -27,6 +31,25 @@ namespace HT2000Viewer
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
+    /// 
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            bool v = (bool)value;
+
+            Visibility targetVisibility = v ? Visibility.Visible: Visibility.Collapsed;
+            return targetVisibility;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+         
+            return false;
+        }
+    }
+
     public sealed partial class MainPage : Page
     {
 
@@ -45,12 +68,11 @@ namespace HT2000Viewer
         }
 
 
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.WarningVisibility == Visibility.Visible)
-                ViewModel.WarningVisibility = Visibility.Collapsed;
-            else
-                ViewModel.WarningVisibility = Visibility.Visible;
+            // create client instance 
+
         }
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

@@ -18,11 +18,13 @@ namespace HT2000Viewer.ViewModels
         public Warehouse warehouse { get; } = new Warehouse();
         public HT2000Monitor ht2000 { get; } = new HT2000Monitor();
 
+        public MqttConnection Mqtt { get; } = new MqttConnection();
         public MainViewModel() {
             Application.Current.Suspending += new SuspendingEventHandler(App_Suspending);
             Application.Current.Resuming += new EventHandler<Object>(App_Resuming);
 
-            ht2000.OnPushData = warehouse.AddState;
+            ht2000.OnPushData += warehouse.AddState;
+            ht2000.OnPushData += Mqtt.PublishState;
             ht2000.Inserted = OnDeviceInserted;
             ht2000.Removed = OnDeviceRemoved;
 
@@ -55,6 +57,12 @@ namespace HT2000Viewer.ViewModels
 
             ht2000.OnSuspending();
             // throw new NotImplementedException();
+        }
+        Visibility _MQTTstatusVisibility;
+        public Visibility MQTTstatusVisibility
+        {
+            get => _MQTTstatusVisibility;
+            set => Set(ref _MQTTstatusVisibility, value);
         }
 
 
