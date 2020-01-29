@@ -16,10 +16,10 @@
         <StackPanel Grid.Column="0">
          
             <Pivot>
-                <PivotItem Header="Mqtt settings">
+                <PivotItem Header="MQTT settings">
                     <StackPanel  >
                         <CheckBox Content="Enable mqtt connection" IsChecked="{x:Bind ViewModel.Mqtt.Enabled, Mode=TwoWay}" />
-                        <TextBox Header="Time" Height="60" Text="sdfs"/>
+                        <TextBox  Header="Time interval(sec)" Height="60" Text="{x:Bind ViewModel.Mqtt.Interval, Mode=TwoWay}"/>
                         <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
 
                         <TextBox  Header="Broker Port" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerPort, Mode=TwoWay}"/>

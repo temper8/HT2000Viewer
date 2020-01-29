@@ -22,13 +22,7 @@
             <NavigationView.Header  >
                 <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  >
-                        <Button  Visibility="Visible" Click="Button_Click"  Height="40" Foreground="CornflowerBlue">
-                            <StackPanel Orientation="Horizontal">
-                                <SymbolIcon Symbol="Accept" Margin="0,0,10,0" />
-                                <TextBlock Text="Connected" />
-                            </StackPanel>
-                        </Button>
-                        <Button  Content="Button"  Visibility="Collapsed" Click="Button_Click"  Height="40" Foreground="CornflowerBlue"/>
+ 
                     <StackPanel MinWidth="250">
                         <TextBlock Text="Temperature °C"   FontSize="20" Foreground="Gray" HorizontalAlignment="Right"/>
                             <TextBlock Text="{x:Bind ViewModel.warehouse.Temperature.ToString('F1', x:Null), Mode=OneWay}"  FontSize="40" FontWeight="Bold" Foreground="Green" HorizontalAlignment="Right"/>

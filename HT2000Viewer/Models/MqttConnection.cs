@@ -1,8 +1,10 @@
 ﻿using HT2000Viewer.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
@@ -68,6 +70,22 @@ namespace HT2000Viewer.Models
             set => Set(ref _ConnectionStatus, value);
         }
 
+        public int Interval
+        {
+            get
+            {
+                if (!Current.LocalSettings.Values.ContainsKey("Interval"))
+                    Current.LocalSettings.Values["Interval"] = 30;
+                return (int)Current.LocalSettings.Values["Interval"];
+            }
+            set
+            {
+                Windows.Storage.ApplicationData.Current.LocalSettings.Values["Interval"] = value;
+                OnPropertyChanged("Interval");
+            }
+        }
+
+        
         public string TemperatureTopic
         {
             get
@@ -119,12 +137,19 @@ namespace HT2000Viewer.Models
         public void DisConnect()
         {
             if (client != null)
-                client.Disconnect();
+                if (client.IsConnected)
+                    client.Disconnect();
             ConnectionStatus = "MQTT status: disconnected";
         }
 
-        public void TryConnect()
+        SemaphoreSlim slim = new SemaphoreSlim(1);
+
+        public async void TryConnect()
         {
+            if (slim.CurrentCount > 1) return;
+
+            await slim.WaitAsync();
+
             ConnectionStatus = "MQTT status: try connect to ...";
             try
             {
@@ -136,19 +161,40 @@ namespace HT2000Viewer.Models
             {
                 ConnectionStatus = "MQTT status: Exeption";
             }
+
+            if (!client.IsConnected)
+                await Task.Delay(5000);
+            slim.Release();
         }
 
 
         public void Publish(string topic, double value)
         {
             if (client == null) return;
-            string strValue = value.ToString("F1");
-            client.Publish(topic, Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+            if (client.IsConnected)
+            {
+                ConnectionStatus = $"MQTT status: connected to {brokerHostName}:{brokerPort}";
+                string strValue = value.ToString("F1");
+                client.Publish(topic, Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+            }
+            else
+            {
+                ConnectionStatus = "MQTT status: disconnected";
+                TryConnect();
+            }
+                
+
         }
 
 
+        DateTime t0 = DateTime.Now;
+
         public void PublishState(Measurement m)
         {
+            TimeSpan i = DateTime.Now - t0;
+            if (i.TotalSeconds < Interval) return;
+            t0 = DateTime.Now;
+
             Publish(TemperatureTopic, m.Temperature);
             Publish(HumidityTopic, m.Humidity);
             Publish(CO2Topic, m.CO2);
