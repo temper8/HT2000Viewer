@@ -47,6 +47,12 @@ namespace HT2000Viewer.Models
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["clientId"] = value;
         }
 
+        public int QoS
+        {
+            get => Convert.ToInt32(Windows.Storage.ApplicationData.Current.LocalSettings.Values["Qos"]);
+            set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["Qos"] = value;
+        }
+
         public bool Enabled
         {
             get
@@ -161,9 +167,9 @@ namespace HT2000Viewer.Models
             {
                 ConnectionStatus = "MQTT status: Exeption";
             }
-
-            if (!client.IsConnected)
-                await Task.Delay(5000);
+            if (client != null)
+                if (!client.IsConnected)
+                    await Task.Delay(5000);
             slim.Release();
         }
 
@@ -175,7 +181,7 @@ namespace HT2000Viewer.Models
             {
                 ConnectionStatus = $"MQTT status: connected to {brokerHostName}:{brokerPort}";
                 string strValue = value.ToString("F1");
-                client.Publish(topic, Encoding.UTF8.GetBytes(strValue), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+                client.Publish(topic, Encoding.UTF8.GetBytes(strValue), (byte)QoS, false);
             }
             else
             {
