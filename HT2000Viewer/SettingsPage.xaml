@@ -8,33 +8,27 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid  >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0">
-         
-            <Pivot>
+        
+            <Pivot  >
                 <PivotItem Header="MQTT settings">
-                    <StackPanel  >
-                        <CheckBox Content="Enable mqtt connection" IsChecked="{x:Bind ViewModel.Mqtt.Enabled, Mode=TwoWay}" />
-                        <TextBox  Header="Time interval(sec)" Height="60" Text="{x:Bind ViewModel.Mqtt.Interval, Mode=TwoWay}"/>
-                        <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
-
-                        <TextBox  Header="Broker Port" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerPort, Mode=TwoWay}"/>
-
-                        <TextBox  Header="Username" Height="60" Text="{x:Bind ViewModel.Mqtt.username, Mode=TwoWay}"/>
-                        <TextBox  Header="Password" Height="60" Text="{x:Bind ViewModel.Mqtt.password, Mode=TwoWay}"/>
-
-                        <TextBox  Header="Client Id" Height="60" Text="{x:Bind ViewModel.Mqtt.clientId, Mode=TwoWay}"/>
-
-                        <TextBox  Header="Temperature Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.TemperatureTopic, Mode=TwoWay}"/>
-
-                        <TextBox  Header="Humidity Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.HumidityTopic, Mode=TwoWay}"/>
-
-                        <TextBox  Header="CO2 Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.CO2Topic, Mode=TwoWay}"/>
-                    </StackPanel>
+                    <Border Name="border" BorderBrush="LightGray" BorderThickness="1" Padding="5" Margin="5,5,5,5">
+                        <ScrollViewer IsVerticalScrollChainingEnabled="True"
+                             VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Visible">
+                            <StackPanel Margin="5 5 200 5">
+                                <CheckBox Content="Enable mqtt connection" IsChecked="{x:Bind ViewModel.Mqtt.Enabled, Mode=TwoWay}" />
+                                <TextBox  Header="Time interval(sec)" Height="60" Text="{x:Bind ViewModel.Mqtt.Interval, Mode=TwoWay}"/>
+                                <TextBox  Header="Broker Host Name" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerHostName, Mode=TwoWay}"/>
+                                <TextBox  Header="Broker Port" Height="60" Text="{x:Bind ViewModel.Mqtt.brokerPort, Mode=TwoWay}"/>
+                                <TextBox  Header="Qos" Height="60" Text="{x:Bind ViewModel.Mqtt.QoS, Mode=TwoWay}"/>
+                                <TextBox  Header="Username" Height="60" Text="{x:Bind ViewModel.Mqtt.username, Mode=TwoWay}"/>
+                                <TextBox  Header="Password" Height="60" Text="{x:Bind ViewModel.Mqtt.password, Mode=TwoWay}"/>
+                                <TextBox  Header="Client Id" Height="60" Text="{x:Bind ViewModel.Mqtt.clientId, Mode=TwoWay}"/>
+                                <TextBox  Header="Temperature Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.TemperatureTopic, Mode=TwoWay}"/>
+                                <TextBox  Header="Humidity Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.HumidityTopic, Mode=TwoWay}"/>
+                                <TextBox  Header="CO2 Topic" Height="60" Text="{x:Bind ViewModel.Mqtt.CO2Topic, Mode=TwoWay}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
                 </PivotItem>
                 <PivotItem Header="Reset database">
                     <Button  Content="Reset database" Click="Button_Click" HorizontalAlignment="Center" Margin="20"/>
@@ -49,8 +43,5 @@
                     </StackPanel>
                 </PivotItem>
             </Pivot>
-        </StackPanel>
-     
-        
-    </Grid>
+
 </Page>
