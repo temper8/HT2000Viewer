@@ -73,7 +73,12 @@ namespace HT2000Viewer.Models
         public string ConnectionStatus
         {
             get => _ConnectionStatus;
-            set => Set(ref _ConnectionStatus, value);
+            set 
+            {
+                if (!String.Equals(_ConnectionStatus, value))
+                    Set(ref _ConnectionStatus, value); 
+            }
+
         }
 
         public int Interval
@@ -132,7 +137,7 @@ namespace HT2000Viewer.Models
         {
             UpdateConnection();
         }
-
+ 
         public void UpdateConnection()
         {
             if (Enabled)
@@ -140,11 +145,13 @@ namespace HT2000Viewer.Models
             else
                 DisConnect();
         }
+
         public void DisConnect()
         {
             if (client != null)
                 if (client.IsConnected)
                     client.Disconnect();
+            client = null;
             ConnectionStatus = "MQTT status: disconnected";
         }
 
@@ -152,20 +159,21 @@ namespace HT2000Viewer.Models
 
         public async void TryConnect()
         {
-            if (slim.CurrentCount > 1) return;
-
             await slim.WaitAsync();
-
             ConnectionStatus = "MQTT status: try connect to ...";
+
             try
             {
-                client = new MqttClient(brokerHostName, brokerPort, false, MqttSslProtocols.None);
+                if (client == null)
+                {
+                    client = new MqttClient(brokerHostName, brokerPort, false, MqttSslProtocols.None);
+                }
                 client.Connect(clientId, username, password);
                 ConnectionStatus = $"MQTT status: connected to {brokerHostName}:{brokerPort}";
             }
             catch (Exception e)
             {
-                ConnectionStatus = "MQTT status: Exeption";
+                ConnectionStatus = e.Message;
             }
             if (client != null)
                 if (!client.IsConnected)
@@ -186,10 +194,9 @@ namespace HT2000Viewer.Models
             else
             {
                 ConnectionStatus = "MQTT status: disconnected";
-                TryConnect();
+                if (slim.CurrentCount > 0)
+                    TryConnect();
             }
-                
-
         }
 
 

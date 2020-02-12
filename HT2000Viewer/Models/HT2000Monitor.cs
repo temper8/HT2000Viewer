@@ -176,11 +176,11 @@ namespace HT2000Viewer.Models
             //StartDeviceWatcher();
             BeginExtendedExecution();
         }
-        bool watchersStarted;
+      
 
         private void StartDeviceWatcher()
         {
-            watchersStarted = true;
+          
             _timer.Start();
             if ((watcher.Status != DeviceWatcherStatus.Started)
                     && (watcher.Status != DeviceWatcherStatus.EnumerationCompleted))
@@ -206,7 +206,7 @@ namespace HT2000Viewer.Models
             // Clear the list of devices so we don't have potentially disconnected devices around
            // watcher = null;
 
-            watchersStarted = false;
+          
         }
 
         public void OnSuspending()

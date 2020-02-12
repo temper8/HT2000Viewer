@@ -113,9 +113,6 @@ namespace HT2000Viewer.Models
         }
 
 
-        int TikCounter;
-        int TikCounter3;
-
         public void AddState(Measurement m)
         {
             Temperature = m.Temperature;
