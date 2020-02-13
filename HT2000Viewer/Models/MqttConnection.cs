@@ -130,7 +130,6 @@ namespace HT2000Viewer.Models
             set => Windows.Storage.ApplicationData.Current.LocalSettings.Values["CO2Topic"] = value;
         }
 
-
         MqttClient client = null;
 
         public MqttConnection()
@@ -180,7 +179,6 @@ namespace HT2000Viewer.Models
                     await Task.Delay(5000);
             slim.Release();
         }
-
 
         public void Publish(string topic, double value)
         {

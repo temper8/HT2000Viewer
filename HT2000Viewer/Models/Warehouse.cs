@@ -118,7 +118,6 @@ namespace HT2000Viewer.Models
             Temperature = m.Temperature;
             Humidity = m.Humidity;
             CO2 = m.CO2;
-
  
             mc[0].Add(m);
             mc[1].Add(m);
@@ -126,30 +125,6 @@ namespace HT2000Viewer.Models
             mc[3].Add(m);
             mc[4].Add(m);
             mc[5].Add(m);
-
-            /*
-
-            if (mc[0].MeasurementData.Count > 300)
-            {
-                mc[0].Remove();
-            }
-                
-
-            if (++TikCounter > 12)
-            {
-                mc[1].Add(m);
-                TikCounter = 0;
-                if (mc[1].MeasurementData.Count > 300)
-                    mc[1].Remove();
-            }
-            if (++TikCounter3 > 144)
-            {
-                mc[2].Add(m);
-                TikCounter3 = 0;
-                if (mc[2].MeasurementData.Count > 300)
-                    mc[2].Remove();
-            }
-            */
         }
     }
         
