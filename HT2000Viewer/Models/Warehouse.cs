@@ -18,45 +18,44 @@ namespace HT2000Viewer.Models
     {
         const int MemorySize = 1000;
         int MaxCount = 0;
-        public MeasurementCollection(string name, TimeSpan ts)
+        TimeSeries TimeSeries;
+
+        public MeasurementCollection(TimeSeries ts)
         {
-            Name = name;
-            TimeSpan = ts;
-            MaxCount = (int)(ts.TotalSeconds / MemorySize);
-            // Get a collection (or create, if doesn't exist)
-            LiteCollection = (LiteCollection<Measurement>) Warehouse.db.GetCollection<Measurement>(Name);
-
-            LiteCollection.EnsureIndex(x => x.Tik, true);
-            MeasurementData = new ObservableCollection<Measurement>(LiteCollection.FindAll());
-
+            Name = ts.Name;
+            TimeSpan = ts.TimeSpan;
+            MaxCount = (int)(TimeSpan.TotalSeconds / MemorySize);
+            TimeSeries = ts;
+            MeasurementData = new ObservableCollection<Measurement>(TimeSeries.Measurements);
         }
+
         public ObservableCollection<Measurement> MeasurementData { get; set; } = new ObservableCollection<Measurement>();
         string Name;
-        LiteCollection<Measurement> LiteCollection;
+       
         public TimeSpan TimeSpan;
         int TikCounter = 0;
         public void Add(Measurement m)
         {
             if (TikCounter-- > 0) return;
-            LiteCollection.Insert(m);
+            TimeSeries.Measurements.Add(m);
             MeasurementData.Add(m);
 
             TikCounter = MaxCount;
             if (MeasurementData.Count > MemorySize)
                 Remove();
+
+            Warehouse.TimeSeriesCollection.Update(TimeSeries);
         }
         public void Remove()
         {
-            Measurement old = MeasurementData[0];
-            LiteCollection.Delete(old.Id);
+            TimeSeries.Measurements.RemoveAt(0);
             MeasurementData.RemoveAt(0);
         }
         public void Drop()
         {
-            Warehouse.db.DropCollection(Name);
-            LiteCollection = (LiteCollection<Measurement>)Warehouse.db.GetCollection<Measurement>(Name);
-            LiteCollection.EnsureIndex(x => x.Tik, true);
-            MeasurementData = new ObservableCollection<Measurement>();
+            TimeSeries.Measurements.Clear();
+            Warehouse.TimeSeriesCollection.Update(TimeSeries);
+            MeasurementData.Clear();
         }
     }
 
@@ -64,10 +63,6 @@ namespace HT2000Viewer.Models
     {
         public MeasurementCollection[] mc = new MeasurementCollection[6];
 
-        public Warehouse()
-        {
-
-        }
 
         public static LiteDatabase db;
 
@@ -82,13 +77,33 @@ namespace HT2000Viewer.Models
             db.Rebuild();
         }
 
+        public MeasurementCollection BuildMeasurementCollection(string name, TimeSpan timespan)
+        {
+            var r = TimeSeriesCollection.Find(x => (x.Name == name));
 
+            TimeSeries ts;
+            if (r.Count<TimeSeries>() == 0)
+            {
+                ts = new TimeSeries
+                {
+                    Name = name,
+                    TimeSpan = timespan,
+                    Measurements = new List<Measurement>()
+                };
+                TimeSeriesCollection.Insert(ts);
+            }
+            else
+                ts = r.First();
+            return new MeasurementCollection(ts);
+        }
+
+        public static LiteCollection<TimeSeries> TimeSeriesCollection;
 
         public async Task InitDB()
         {
             var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             var folderPath = localFolder.Path;
-            var filePath = Path.Combine(folderPath, @"ts.db");
+            var filePath = Path.Combine(folderPath, @"ts_db.db");
            // Debug.WriteLine(filePath);
 
             string connectionString = String.Format(@"Filename={0}; Upgrade=true", filePath);
@@ -106,12 +121,14 @@ namespace HT2000Viewer.Models
                 db = new LiteDatabase(connectionString);
             }
 
-            mc[0] = new MeasurementCollection("fast_ts", new TimeSpan(0, 5, 0));
-            mc[1] = new MeasurementCollection("normal_ts", new TimeSpan(1, 0, 0));
-            mc[2] = new MeasurementCollection("slow_ts", new TimeSpan(12, 0, 0));
-            mc[3] = new MeasurementCollection("quarter_ts", new TimeSpan(6, 0, 0));
-            mc[4] = new MeasurementCollection("day_ts", new TimeSpan(24, 0, 0));
-            mc[5] = new MeasurementCollection("week_ts", new TimeSpan(7, 0, 0, 0));
+            TimeSeriesCollection = (LiteCollection<TimeSeries>)Warehouse.db.GetCollection<TimeSeries>("timeseries");
+
+            mc[0] = BuildMeasurementCollection("fast_ts", new TimeSpan(0, 5, 0));
+            mc[1] = BuildMeasurementCollection("normal_ts", new TimeSpan(1, 0, 0));
+            mc[2] = BuildMeasurementCollection("slow_ts", new TimeSpan(12, 0, 0));
+            mc[3] = BuildMeasurementCollection("quarter_ts", new TimeSpan(6, 0, 0));
+            mc[4] = BuildMeasurementCollection("day_ts", new TimeSpan(24, 0, 0));
+            mc[5] = BuildMeasurementCollection("week_ts", new TimeSpan(7, 0, 0, 0));
 
         }
 
@@ -137,7 +154,6 @@ namespace HT2000Viewer.Models
             set => Set(ref _Humidity, value);
         }
 
-        int RCounter = 600;
         public void AddState(Measurement m)
         {
             Temperature = m.Temperature;
@@ -150,12 +166,6 @@ namespace HT2000Viewer.Models
             mc[3].Add(m);
             mc[4].Add(m);
             mc[5].Add(m);
-            Debug.WriteLine(RCounter);
-            if (RCounter-- <0)
-            {
-                RCounter = 600;
-                db.Rebuild();
-            }
         }
     }
         
