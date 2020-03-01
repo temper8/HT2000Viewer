@@ -28,9 +28,20 @@ namespace HT2000Viewer.ViewModels
             ht2000.Inserted = OnDeviceInserted;
             ht2000.Removed = OnDeviceRemoved;
 
-            ht2000.Initialize();
+            
         }
         
+        public async Task Init()
+        {
+            await warehouse.InitDB();
+            ht2000.Initialize();
+        }
+
+        public void Rebuild()
+        {
+            warehouse.Rebuild();
+        }
+
         public async void ResetData()
         {
             warehouse.DropCollections();

@@ -3,10 +3,13 @@ using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.UI.Xaml.Controls;
 
 namespace HT2000Viewer.Models
 {
@@ -21,7 +24,7 @@ namespace HT2000Viewer.Models
             TimeSpan = ts;
             MaxCount = (int)(ts.TotalSeconds / MemorySize);
             // Get a collection (or create, if doesn't exist)
-            LiteCollection = Warehouse.db.GetCollection<Measurement>(Name);
+            LiteCollection = (LiteCollection<Measurement>) Warehouse.db.GetCollection<Measurement>(Name);
 
             LiteCollection.EnsureIndex(x => x.Tik, true);
             MeasurementData = new ObservableCollection<Measurement>(LiteCollection.FindAll());
@@ -51,7 +54,7 @@ namespace HT2000Viewer.Models
         public void Drop()
         {
             Warehouse.db.DropCollection(Name);
-            LiteCollection = Warehouse.db.GetCollection<Measurement>(Name);
+            LiteCollection = (LiteCollection<Measurement>)Warehouse.db.GetCollection<Measurement>(Name);
             LiteCollection.EnsureIndex(x => x.Tik, true);
             MeasurementData = new ObservableCollection<Measurement>();
         }
@@ -63,13 +66,7 @@ namespace HT2000Viewer.Models
 
         public Warehouse()
         {
-            InitDB();
-            mc[0] = new MeasurementCollection("fast_ts", new TimeSpan(0, 5, 0));
-            mc[1] = new MeasurementCollection("normal_ts", new TimeSpan(1, 0, 0));
-            mc[2] = new MeasurementCollection("slow_ts", new TimeSpan(12, 0, 0));
-            mc[3] = new MeasurementCollection("quarter_ts", new TimeSpan(6, 0, 0));
-            mc[4] = new MeasurementCollection("day_ts", new TimeSpan(24, 0, 0));
-            mc[5] = new MeasurementCollection("week_ts", new TimeSpan(7,0, 0, 0));
+
         }
 
         public static LiteDatabase db;
@@ -80,17 +77,45 @@ namespace HT2000Viewer.Models
                 c.Drop();
         }
 
-        private void InitDB()
+        public void Rebuild()
+        {
+            db.Rebuild();
+        }
+
+
+
+        public async Task InitDB()
         {
             var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             var folderPath = localFolder.Path;
             var filePath = Path.Combine(folderPath, @"ts.db");
+           // Debug.WriteLine(filePath);
 
-            string connectionString = String.Format(@"Filename={0}; Journal=false", filePath);
-            db = new LiteDatabase(connectionString);
+            string connectionString = String.Format(@"Filename={0}; Upgrade=true", filePath);
+
+            try
+            {
+                db = new LiteDatabase(connectionString);
+            }
+            catch (LiteException e)
+            {
+             //   Debug.WriteLine(e.Message);
+                db = null;
+                StorageFile file = await StorageFile.GetFileFromPathAsync(filePath);
+                await file.DeleteAsync();
+                db = new LiteDatabase(connectionString);
+            }
+
+            mc[0] = new MeasurementCollection("fast_ts", new TimeSpan(0, 5, 0));
+            mc[1] = new MeasurementCollection("normal_ts", new TimeSpan(1, 0, 0));
+            mc[2] = new MeasurementCollection("slow_ts", new TimeSpan(12, 0, 0));
+            mc[3] = new MeasurementCollection("quarter_ts", new TimeSpan(6, 0, 0));
+            mc[4] = new MeasurementCollection("day_ts", new TimeSpan(24, 0, 0));
+            mc[5] = new MeasurementCollection("week_ts", new TimeSpan(7, 0, 0, 0));
+
         }
 
-            double _CO2;
+        double _CO2;
         public double CO2
         {
             get => _CO2;
@@ -112,7 +137,7 @@ namespace HT2000Viewer.Models
             set => Set(ref _Humidity, value);
         }
 
-
+        int RCounter = 600;
         public void AddState(Measurement m)
         {
             Temperature = m.Temperature;
@@ -125,6 +150,12 @@ namespace HT2000Viewer.Models
             mc[3].Add(m);
             mc[4].Add(m);
             mc[5].Add(m);
+            Debug.WriteLine(RCounter);
+            if (RCounter-- <0)
+            {
+                RCounter = 600;
+                db.Rebuild();
+            }
         }
     }
         
