@@ -44,7 +44,7 @@ namespace HT2000Viewer.ViewModels
 
         public async void ResetData()
         {
-            warehouse.DropCollections();
+            warehouse.ClearCollections();
 
             ContentDialog dialog = new ContentDialog()
             {

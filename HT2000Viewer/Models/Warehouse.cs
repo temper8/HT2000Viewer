@@ -51,7 +51,7 @@ namespace HT2000Viewer.Models
             TimeSeries.Measurements.RemoveAt(0);
             MeasurementData.RemoveAt(0);
         }
-        public void Drop()
+        public void Clear()
         {
             TimeSeries.Measurements.Clear();
             Warehouse.TimeSeriesCollection.Update(TimeSeries);
@@ -66,10 +66,10 @@ namespace HT2000Viewer.Models
 
         public static LiteDatabase db;
 
-        public void DropCollections()
+        public void ClearCollections()
         {
             foreach (var c in mc)
-                c.Drop();
+                c.Clear();
         }
 
         public void Rebuild()
